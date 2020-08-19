@@ -1,0 +1,92 @@
+[
+    {
+        "id": "5f200b83fc13ae6035000000",
+        "first_name": "Harley",
+        "last_name": "Riddiford",
+        "email": "hriddiford0@zimbio.com",
+        "gender": "Female",
+        "color": "#0f0612",
+        "company": "Champlin-Hyatt"
+    },
+    {
+        "id": "5f200b83fc13ae6035000001",
+        "first_name": "Dagmar",
+        "last_name": "Hallex",
+        "email": "dhallex1@tumblr.com",
+        "gender": "Female",
+        "color": "#602654",
+        "company": "Hamill-Wyman"
+    },
+    {
+        "id": "5f200b83fc13ae6035000002",
+        "first_name": "Barbie",
+        "last_name": "Merritt",
+        "email": "bmerritt2@yolasite.com",
+        "gender": "Female",
+        "color": "#cb4592",
+        "company": "Swaniawski Inc"
+    },
+    {
+        "id": "5f200b83fc13ae6035000003",
+        "first_name": "Rabbi",
+        "last_name": "O' Markey",
+        "email": "romarkey3@google.com",
+        "gender": "Male",
+        "color": "#e89b65",
+        "company": "Borer LLC"
+    },
+    {
+        "id": "5f200b83fc13ae6035000004",
+        "first_name": "Roseann",
+        "last_name": "Wymer",
+        "email": "rwymer4@time.com",
+        "gender": "Female",
+        "color": "#cc69c4",
+        "company": "Lubowitz-Schuster"
+    },
+    {
+        "id": "5f200b83fc13ae6035000005",
+        "first_name": "Avigdor",
+        "last_name": "Creffield",
+        "email": "acreffield5@imdb.com",
+        "gender": "Male",
+        "color": "#d748f5",
+        "company": "Hyatt-Hartmann"
+    },
+    {
+        "id": "5f200b83fc13ae6035000006",
+        "first_name": "Brett",
+        "last_name": "Eastmead",
+        "email": "beastmead6@bandcamp.com",
+        "gender": "Female",
+        "color": "#1cd7ff",
+        "company": "Hyatt LLC"
+    },
+    {
+        "id": "5f200b83fc13ae6035000007",
+        "first_name": "Arv",
+        "last_name": "Shallo",
+        "email": "ashallo7@wikipedia.org",
+        "gender": "Male",
+        "color": "#191bff",
+        "company": "Reinger Inc"
+    },
+    {
+        "id": "5f200b83fc13ae6035000008",
+        "first_name": "Janel",
+        "last_name": "Lafflin",
+        "email": "jlafflin8@blinklist.com",
+        "gender": "Female",
+        "color": "#a8d6b5",
+        "company": "Bernhard-Mann"
+    },
+    {
+        "id": "5f200b83fc13ae6035000009",
+        "first_name": "Babbette",
+        "last_name": "Pinare",
+        "email": "bpinare9@hp.com",
+        "gender": "Female",
+        "color": "#df6a57",
+        "company": "Abbott Inc"
+    }
+]
