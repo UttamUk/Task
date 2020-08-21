@@ -6,7 +6,7 @@ const $ = window.$;
 
 class Chat extends Component {
     state = {
-        bot: true,
+        isBotOpen: false,
         msgArr: [],
         message: "",
     }
@@ -18,14 +18,14 @@ class Chat extends Component {
     //     return nextProps.UserReducer.LoginUserId !== this.props.UserReducer.LoginUserId
     // }
 
-    componentDidUpdate(prevProps, prevState){
-        if (prevProps.chatId !== this.props.chatId) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.chatId !== this.props.chatId || prevProps.UserReducer.LoginUserId !== this.props.UserReducer.LoginUserId) {
             this.setState({
                 msgArr: []
-            })            
+            })
         }
     }
-    
+
     handleChangeMsg = (event) => {
         event.preventDefault();
         this.setState({
@@ -36,8 +36,9 @@ class Chat extends Component {
     sendMessage = (event) => {
         event.preventDefault();
         if (this.state.message) {
-            let chatId = this.props.chatId;
-            const userInfo = this.props.UserReducer.userList.filter(item => item.id === chatId);
+            // let chatId = this.props.chatId;
+            const LoginUserId = this.props.UserReducer.LoginUserId;
+            const userInfo = this.props.UserReducer.userList.filter(item => item.id === LoginUserId);
             const userInfoObj = userInfo[0];
             let date = new Date();
             let newDate = date.getHours() + ":" + date.getMinutes();
@@ -65,9 +66,9 @@ class Chat extends Component {
     openbot = () => {
         $('#bot').removeClass('botactive');
         $('#chat-id').removeClass('chatshow');
-        this.setState({
-            bot: false
-        })
+        // this.setState({
+        //     isBotOpen: !this.state.isBotOpen
+        // })
     }
 
 
@@ -83,29 +84,32 @@ class Chat extends Component {
 
     render() {
         const list = this.props.UserReducer.userList;
+        const chatId = this.props.chatId;
         const LoginUserId = this.props.UserReducer.LoginUserId;
-        const adminInfo = list.filter(item => item.id === LoginUserId);
+        const adminInfo = list.filter(item => item.id === chatId);
         const time = new Date().getHours() + ":" + new Date().getMinutes();
         return (
             <Aux>
                 <div className="bot">
-                    <button className="chat-bot" id="bot" onClick={this.openbot}>
+                    {/* <button className="chat-bot" id="bot" onClick={this.openbot}>
                         <span className="notify-msg"></span>
-                        {/* {this.state.bot ? */}
-                        {/* <span className="close-chat"><i className="fas fa-times"></i></span>  */}
-                        <span className="close-chat"><i className="far fa-comment-alt"></i></span>
-                        {/* } */}
-                    </button>
+                        {this.state.isBotOpen
+                            ? <span className="close-chat"><i className="fas fa-times"></i></span>
+                            : <span className="close-chat"><i className="far fa-comment-alt"></i></span>
+                        }
+                    </button> */}
                     <div className="bot-box" id="chat-id">
                         <ChatCmp
                             send={this.sendMessage}
                             changeMsg={this.handleChangeMsg}
                             adminInfo={adminInfo[0]}
+                            openbot={this.openbot}
                             msgArr={this.state.msgArr}
                             time={time}
                         />
                     </div>
                 </div>
+                    
             </Aux>
         )
     }

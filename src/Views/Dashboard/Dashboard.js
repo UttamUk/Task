@@ -21,6 +21,8 @@ class Dashboard extends Component {
         singleUserData: undefined,
         isOpen: false,
         chatId: "",
+        sort: "",
+        sortData: undefined,
     }
 
     componentDidMount() {
@@ -32,6 +34,46 @@ class Dashboard extends Component {
             singleUserData: data,
             chatId: data.id,
         })
+    }
+
+    handleSort = (event) => {
+        event.preventDefault();
+        // const name = event.target.name;
+        const value = event.target.value;
+        const arr = this.props.UserReducer.userList;
+        if (value === "1") {
+            const newArray = arr.sort((a, b) => {
+                var aVal = a.first_name.toUpperCase();
+                var bVal = b.first_name.toUpperCase();
+                if (aVal < bVal) {
+                    return -1;
+                }
+                if (aVal > bVal) {
+                    return 1;
+                }
+                return 0
+            });
+            this.setState({
+                sortData: newArray
+            })
+            return;
+        } else if (value === "2") {
+            const newArray = arr.sort((a, b) => {
+                var aVal = a.company.toUpperCase();
+                var bVal = b.company.toUpperCase();
+                if (aVal < bVal) {
+                    return -1;
+                }
+                if (aVal > bVal) {
+                    return 1;
+                }
+                return 0
+            });
+            this.setState({
+                sortData: newArray
+            })
+            return;
+        }
     }
 
     handleCheck = (event, id) => {
@@ -90,7 +132,6 @@ class Dashboard extends Component {
                     color: "#e89b65",
                     company: company
                 };
-                console.log(body);
                 this.props.UpdateContactAction(body)
             }
         } else {
@@ -161,10 +202,10 @@ class Dashboard extends Component {
                             </div>
                             <div className="sort">
                                 <span>Sort By:</span>
-                                <select className="sort-select">
-                                    <option>Created Date</option>
-                                    <option>Name</option>
-                                    <option>Company</option>
+                                <select className="sort-select" defaultValue={'DEFAULT'} name="sort" onChange={this.handleSort}>
+                                    <option value={'DEFAULT'}>Select </option>
+                                    <option value="1">Name</option>
+                                    <option value="2">Company</option>
                                 </select>
                             </div>
                         </div>

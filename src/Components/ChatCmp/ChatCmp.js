@@ -6,7 +6,10 @@ const ChatCmp = (props) => {
         <Aux>
             <div className="chat-section">
                 <div className="info border-right-0">
-                    <h2 className="info-title">CHAT</h2>
+                    <h2 className="info-title">
+                        CHAT
+                        <span className="text-white float-right" style={{cursor: "pointer"}} onClick={props.openbot}>X</span>
+                    </h2>
                     <div className="chat">
                         <div className="chat-box" id="chatbox">
                             <div className="message-box message-box2">
@@ -15,7 +18,7 @@ const ChatCmp = (props) => {
                                         {/* <img src="./assets/images/live.png" className="mr-2 chat-img border" alt="no img" /> */}
                                         <div className="chat-img mr-2 d-flex align-items-center justify-content-center" style={{ backgroundColor: props.adminInfo?.color }}>
                                             <h6 className="m-0 text-white">
-                                                {props.adminInfo?.first_name[0] + props.adminInfo?.last_name[0]}
+                                                {props.adminInfo ? props.adminInfo?.first_name[0] + props.adminInfo?.last_name[0] : null}
                                             </h6>
                                         </div>
                                         <div className="media-body chat-left">
