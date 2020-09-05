@@ -1,276 +1,255 @@
 import React, { Component } from 'react'
 import Aux from '../../hoc/Aux';
-import UserData from '../../Components/UserData/UserData';
-import UserTable from '../../Components/UserData/UserTable';
-import { UserListAction, AddContactAction, UpdateContactAction, DeleteContactAction } from '../../Store/Actions/UserAction';
+// import { UserListAction} from '../../Store/Actions/SpaceAction';
 import { connect } from 'react-redux';
-import Chat from '../Chat/Chat';
-const $ = window.$;
+import List from '../../Components/List/List';
+import FilterCmp from '../../Components/FilterCmp/FilterCmp';
+import { SpaceListAction, FilterAction } from '../../Store/Actions/SpaceAction';
 
 class Dashboard extends Component {
     state = {
-        name: "",
-        email: "",
-        firstName: "",
-        lastName: "",
-        gender: "",
-        color: "yellow",
-        company: "",
-        id: "",
-        checkList: [],
-        singleUserData: undefined,
-        isOpen: false,
-        chatId: "",
-        sort: "",
-        sortData: undefined,
+        isLoading: false,
+        land_success: undefined,
+        launch_success: undefined,
+        launch_year: undefined,
+        years: [
+            "2006",
+            "2007",
+            "2008",
+            "2009",
+            "20010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+            "2019",
+            "2020",
+        ],
+        isSuccessful: [true, false],
+        errMsg: "",
     }
 
     componentDidMount() {
-        this.props.UserListAction();
-    }
-
-    signleUser = (data) => {
         this.setState({
-            singleUserData: data,
-            chatId: data.id,
+            isLoading: true
         })
+        this.props.SpaceListAction();
     }
 
-    handleSort = (event) => {
-        event.preventDefault();
-        // const name = event.target.name;
-        const value = event.target.value;
-        const arr = this.props.UserReducer.userList;
-        if (value === "1") {
-            const newArray = arr.sort((a, b) => {
-                var aVal = a.first_name.toUpperCase();
-                var bVal = b.first_name.toUpperCase();
-                if (aVal < bVal) {
-                    return -1;
-                }
-                if (aVal > bVal) {
-                    return 1;
-                }
-                return 0
-            });
+    componentDidUpdate(prevProps, prevState) {
+        // if (this.props.SpaceReducer.spaceList?.length === 0) {
+        //     this.setState({
+        //         isLoading: false
+        //     });
+        //     return
+        // }
+        if (prevProps.SpaceReducer.spaceList === undefined && this.props.SpaceReducer.spaceList?.length > 0) {
             this.setState({
-                sortData: newArray
-            })
-            return;
-        } else if (value === "2") {
-            const newArray = arr.sort((a, b) => {
-                var aVal = a.company.toUpperCase();
-                var bVal = b.company.toUpperCase();
-                if (aVal < bVal) {
-                    return -1;
-                }
-                if (aVal > bVal) {
-                    return 1;
-                }
-                return 0
-            });
-            this.setState({
-                sortData: newArray
-            })
-            return;
-        }
-    }
-
-    handleCheck = (event, id) => {
-        const checked = event.target.checked;
-        if (checked) {
-            this.setState({
-                checkList: [...this.state.checkList, id]
-            });
-        } else {
-            const newValues = this.state.checkList.filter(res => res !== id);
-            this.setState({
-                checkList: newValues
+                isLoading: false
             });
         }
     }
 
-    deleteContacts = () => {
-        this.props.DeleteContactAction(this.state.checkList);
-        this.setState({
-            singleUserData: undefined,
-            chatId: ""
-        })
-    }
+    // shouldComponentUpdate(nextProps, nextState){
+    //     return this.props.SpaceReducer.spaceList?.length === undefined
+    // }
 
-    handleChange = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        this.setState({
-            [name]: value
-        })
-    }
-
-    addContact = (event) => {
-        event.preventDefault();
-        const { email, firstName, lastName, company, gender, id, isOpen } = this.state;
-        const list = this.props.UserReducer.userList;
-        if (email && firstName && lastName && company && gender) {
-            if (!isOpen) {
+    // TO GET YEAR FROM THE FILTER
+    getYear = (year) => {
+        const { land_success, launch_year, launch_success } = this.state;
+        if (launch_year === year) {
+            this.setState({
+                launch_year: undefined
+            });
+            if (land_success !== undefined && launch_success !== undefined && launch_year === year) {
+                this.setState({
+                    isLoading: true
+                })
                 const body = {
-                    id: list[list.length - 1] && list[list.length - 1].id + 1,
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: email,
-                    gender: gender,
-                    color: "#e89b65",
-                    company: company
-                };
-                this.props.AddContactAction(body)
-            } else {
-                const body = {
-                    id: id,
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: email,
-                    gender: gender,
-                    color: "#e89b65",
-                    company: company
-                };
-                this.props.UpdateContactAction(body)
+                    launch_success: launch_success,
+                    land_success: land_success,
+                }
+                this.props.FilterAction(body);
+                return
             }
+            return;
         } else {
-            console.log("sdad");
+            this.setState({
+                ...this.state.years,
+                launch_year: year,
+            });
+        }
+        if (land_success !== undefined && launch_success !== undefined && year) {
+            this.setState({
+                isLoading: true
+            })
+            const body = {
+                launch_success: launch_success,
+                land_success: land_success,
+                launch_year: year,
+            }
+            this.props.FilterAction(body);
+            return
+        } else if (land_success === undefined && launch_success === undefined) {
+            this.setState({
+                errMsg: "Please select Landing and Launching"
+            });
+            setTimeout(() => {
+                this.setState({
+                    errMsg: ""
+                });
+            }, 3000);
         }
     }
 
-    clearForm = () => {
-        this.setState({
-            email: "",
-            firstName: "",
-            lastName: "",
-            gender: "",
-            color: "yellow",
-            company: "",
-        })
+    // TO GET LAUNCH VALUE
+    getLaunch = (val) => {
+        const { land_success, launch_year, launch_success } = this.state;
+        if (launch_success === val) {
+            this.setState({
+                launch_success: undefined
+            });
+            return;
+        } else {
+            this.setState({
+                launch_success: val,
+            });
+        }
+        if (launch_year && land_success === undefined) {
+            this.setState({
+                errMsg: "Please select Landing"
+            });
+            setTimeout(() => {
+                this.setState({
+                    errMsg: ""
+                });
+            }, 3000);
+            return;
+        }
+        if (land_success !== undefined && launch_year) {
+            this.setState({
+                isLoading: true
+            })
+            const body = {
+                launch_success: val,
+                land_success: land_success,
+                launch_year: launch_year,
+            }
+            this.props.FilterAction(body);
+            return;
+        } else if (land_success !== undefined) {
+            this.setState({
+                isLoading: true
+            })
+            const body = {
+                launch_success: val,
+                land_success: land_success,
+            }
+            this.props.FilterAction(body);
+            return;
+        } else if (!val || val) {
+            this.setState({
+                isLoading: true
+            })
+            const body = {
+                launch_success: val,
+            }
+            this.props.FilterAction(body);
+            return;
+        }
     }
 
-    openModel = (item) => {
-        $('#add').modal("show");
-        this.setState({
-            id: item.id,
-            email: item.email,
-            firstName: item.first_name,
-            lastName: item.last_name,
-            gender: item.gender,
-            company: item.company,
-            isOpen: true,
-        })
+    getLand = (val) => {
+        const { land_success, launch_year, launch_success } = this.state;
+        if (land_success === val) {
+            this.setState({
+                land_success: undefined
+            });
+            if (land_success !== undefined && launch_year === undefined && land_success === val) {
+                const body = {
+                    launch_success: launch_success,
+                }
+                this.props.FilterAction(body);
+                return
+            }
+            return;
+        } else {
+            this.setState({
+                land_success: val
+            });
+        }
+        if (launch_success === undefined) {
+            this.setState({
+                errMsg: "Please select launching"
+            });
+            setTimeout(() => {
+                this.setState({
+                    errMsg: ""
+                });
+            }, 3000);
+            return;
+        }
+        if (launch_success !== undefined && launch_year) {
+            const body = {
+                launch_success: launch_success,
+                land_success: val,
+                launch_year: launch_year,
+            }
+            this.props.FilterAction(body);
+            return;
+        } else if (launch_success !== undefined) {
+            const body = {
+                launch_success: launch_success,
+                land_success: val,
+            }
+            this.props.FilterAction(body);
+            return;
+        }
+
     }
 
-    // TO OPEN CHAT BOX
-    openbot = (val) => {
-        $('#bot').addClass('botactive');
-        $('#chat-id').addClass('chatshow');
-        this.setState({
-            bot: !this.state.bot,
-            chatId: val
-        })
-    }
 
     render() {
-        const list = this.props.UserReducer.userList;
-        const LoginUserId = this.props.UserReducer.LoginUserId;
-        const listData = this.props.UserReducer.userList.filter(item => item.id !== LoginUserId);
-        const { singleUserData, email, firstName,
-            lastName, company, gender, isOpen, chatId } = this.state;
-        const inpValues = {
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            gender: gender,
-            company: company,
-        }
+        const list = this.props.SpaceReducer.spaceList;
+        const { isLoading, errMsg, years, isSuccessful,
+            launch_year, land_success, launch_success } = this.state;
         return (
             <Aux>
-                <div className="row m-0 mb-2">
-                    <div className="col-md-12">
-                        <div className="menu-sort">
-                            <div className="contact-info">
-                                <div className="contact-img">
-                                    <i className="fas fa-address-book" />
-                                </div>
-                                <div className="contact-content">
-                                    <h2 className="contact-title">Contacts</h2>
-                                    <p className="contact-subtitle">Welcome to FlatCRM contact Page</p>
-                                </div>
-                            </div>
-                            <div className="sort">
-                                <span>Sort By:</span>
-                                <select className="sort-select" defaultValue={'DEFAULT'} name="sort" onChange={this.handleSort}>
-                                    <option value={'DEFAULT'}>Select </option>
-                                    <option value="1">Name</option>
-                                    <option value="2">Company</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="display">
-                    <div className="row m-0">
-                        <div className="col-md-7">
-                            <div className="form-group row contact">
-                                <div className="col-sm-7 mb-2">
-                                    <div className="search-contact">
-                                        <input type="text" className="form-control" placeholder="Search Contact" />
-                                        <span className="search-icon"><i className="fas fa-search" /></span>
-                                    </div>
-                                </div>
-                                <div className="col-sm-5 mb-2">
-                                    <button type="button" className="btn btn-add" data-toggle="modal" data-target="#add" onClick={this.clearForm}>+ Add
-                                        Contact</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row m-0">
-                        <div className="col-md-7">
-                            <UserTable
-                                list={listData || list}
-                                inpValues={inpValues}
-                                isOpen={isOpen}
-                                chatId={chatId}
-                                LoginUserId={LoginUserId}
-                                handleCheck={this.handleCheck}
-                                signleUser={this.signleUser}
-                                handleChange={this.handleChange}
-                                addContact={this.addContact}
-                                openModel={this.openModel}
-                                deleteContacts={this.deleteContacts}
-                                openbot={this.openbot}
-                            />
-                        </div>
-                        <div className="col-md-5">
-                            {singleUserData
-                                ? <UserData singleUserData={singleUserData} />
-                                : null}
-                        </div>
-                    </div>
-                </div>
-
-                <Chat chatId={chatId} />
+                {errMsg ? <div className="toastr">{errMsg}</div> : (null)}
+                <FilterCmp
+                    years={years}
+                    isSuccessful={isSuccessful}
+                    launch_year={launch_year}
+                    land_success={land_success}
+                    launch_success={launch_success}
+                    getYear={this.getYear}
+                    getLaunch={this.getLaunch}
+                    getLand={this.getLand}
+                />
+                <List
+                    isLoading={isLoading}
+                    list={list}
+                />
             </Aux>
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    const { UserReducer, LoginUserId } = state;
-    return state;
+    const { SpaceReducer } = state;
+    return {
+        SpaceReducer
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        UserListAction: () => dispatch(UserListAction()),
-        AddContactAction: (body) => dispatch(AddContactAction(body)),
-        UpdateContactAction: (body) => dispatch(UpdateContactAction(body)),
-        DeleteContactAction: (body) => dispatch(DeleteContactAction(body)),
+        SpaceListAction: () => dispatch(SpaceListAction()),
+        FilterAction: (body) => dispatch(FilterAction(body)),
     }
 }
 

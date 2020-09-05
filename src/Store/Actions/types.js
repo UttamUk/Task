@@ -1,5 +1,2 @@
-export const LOGIN = "LOGIN";
-export const USERLIST = "USERLIST";
-export const ADDCONTACT = "ADDCONTACT";
-export const UPDATECONTACT = "UPDATECONTACT";
-export const DELETECONTACT = "DELETECONTACT";
+export const LIST = "LIST";
+export const RESET = "RESET";

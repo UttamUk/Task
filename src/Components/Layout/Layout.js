@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import Aux from '../../hoc/Aux';
 import { Switch, Route } from 'react-router-dom';
 import routes from '../../routes';
-import SideBar from '../Common/SideBar/SideBar';
-import Header from '../Common/Header/Header';
 
 class Layout extends Component {
 
@@ -22,15 +20,12 @@ class Layout extends Component {
     render() {
         return (
             <Aux>
-                <SideBar />
-                <main>
-                    <Header />
-                    <section className="dashboad">
-                        <Switch>
-                            {this.getRoutes(routes)}
-                        </Switch>
-                    </section>
-                </main>
+                <h1 className="heading">SpaceX Launch Programs</h1>
+                <div className="main">
+                    <Switch>
+                        {this.getRoutes(routes)}
+                    </Switch>
+                </div>
             </Aux>
         )
     }

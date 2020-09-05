@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import UserReducer from './UserReducer';
+import SpaceReducer from './SpaceReducer';
 
 const AllReducers = combineReducers({
-    UserReducer: UserReducer
+    SpaceReducer: SpaceReducer
 });
 
 export default AllReducers;
