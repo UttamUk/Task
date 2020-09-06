@@ -1,16 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from 'react';
 import Aux from './hoc/Aux';
 import { Switch, Route } from 'react-router-dom';
-import Layout from './Components/Layout/Layout';
+// import Layout from './Components/Layout/Layout';
+const Layout = React.lazy(() => import('./Components/Layout/Layout'));
 
 function App() {
   return (
     <Aux>
-      <Switch>
-        <Route path="/" render={props => <Layout {...props} />} />
-      </Switch>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route path="/" render={props => <Layout {...props} />} />
+        </Switch>
+      </Suspense>
     </Aux>
   );
 }

@@ -41,12 +41,6 @@ class Dashboard extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // if (this.props.SpaceReducer.spaceList?.length === 0) {
-        //     this.setState({
-        //         isLoading: false
-        //     });
-        //     return
-        // }
         if (prevProps.SpaceReducer.spaceList === undefined && this.props.SpaceReducer.spaceList?.length > 0) {
             this.setState({
                 isLoading: false
@@ -54,55 +48,33 @@ class Dashboard extends Component {
         }
     }
 
-    // shouldComponentUpdate(nextProps, nextState){
-    //     return this.props.SpaceReducer.spaceList?.length === undefined
-    // }
-
     // TO GET YEAR FROM THE FILTER
     getYear = (year) => {
         const { land_success, launch_year, launch_success } = this.state;
         if (launch_year === year) {
             this.setState({
-                launch_year: undefined
+                launch_year: undefined,
+                isLoading: true
             });
-            if (land_success !== undefined && launch_success !== undefined && launch_year === year) {
-                this.setState({
-                    isLoading: true
-                })
-                const body = {
-                    launch_success: launch_success,
-                    land_success: land_success,
-                }
-                this.props.FilterAction(body);
-                return
+            const body = {
+                launch_success: launch_success,
+                land_success: land_success,
+                launch_year: undefined
             }
+            this.props.FilterAction(body);
             return;
         } else {
             this.setState({
                 ...this.state.years,
                 launch_year: year,
-            });
-        }
-        if (land_success !== undefined && launch_success !== undefined && year) {
-            this.setState({
                 isLoading: true
-            })
+            });
             const body = {
                 launch_success: launch_success,
                 land_success: land_success,
                 launch_year: year,
             }
             this.props.FilterAction(body);
-            return
-        } else if (land_success === undefined && launch_success === undefined) {
-            this.setState({
-                errMsg: "Please select Landing and Launching"
-            });
-            setTimeout(() => {
-                this.setState({
-                    errMsg: ""
-                });
-            }, 3000);
         }
     }
 
@@ -111,55 +83,27 @@ class Dashboard extends Component {
         const { land_success, launch_year, launch_success } = this.state;
         if (launch_success === val) {
             this.setState({
-                launch_success: undefined
+                launch_success: undefined,
+                isLoading: true
             });
+            const body = {
+                launch_success: undefined,
+                land_success: land_success,
+                launch_year: launch_year,
+            }
+            this.props.FilterAction(body);
             return;
         } else {
             this.setState({
                 launch_success: val,
-            });
-        }
-        if (launch_year && land_success === undefined) {
-            this.setState({
-                errMsg: "Please select Landing"
-            });
-            setTimeout(() => {
-                this.setState({
-                    errMsg: ""
-                });
-            }, 3000);
-            return;
-        }
-        if (land_success !== undefined && launch_year) {
-            this.setState({
                 isLoading: true
-            })
+            });
             const body = {
                 launch_success: val,
                 land_success: land_success,
                 launch_year: launch_year,
             }
             this.props.FilterAction(body);
-            return;
-        } else if (land_success !== undefined) {
-            this.setState({
-                isLoading: true
-            })
-            const body = {
-                launch_success: val,
-                land_success: land_success,
-            }
-            this.props.FilterAction(body);
-            return;
-        } else if (!val || val) {
-            this.setState({
-                isLoading: true
-            })
-            const body = {
-                launch_success: val,
-            }
-            this.props.FilterAction(body);
-            return;
         }
     }
 
@@ -167,49 +111,28 @@ class Dashboard extends Component {
         const { land_success, launch_year, launch_success } = this.state;
         if (land_success === val) {
             this.setState({
-                land_success: undefined
+                land_success: undefined,
+                isLoading: true
             });
-            if (land_success !== undefined && launch_year === undefined && land_success === val) {
-                const body = {
-                    launch_success: launch_success,
-                }
-                this.props.FilterAction(body);
-                return
+            const body = {
+                launch_success: launch_success,
+                land_success: undefined,
+                launch_year: launch_year,
             }
+            this.props.FilterAction(body);
             return;
         } else {
             this.setState({
-                land_success: val
+                land_success: val,
+                isLoading: true
             });
-        }
-        if (launch_success === undefined) {
-            this.setState({
-                errMsg: "Please select launching"
-            });
-            setTimeout(() => {
-                this.setState({
-                    errMsg: ""
-                });
-            }, 3000);
-            return;
-        }
-        if (launch_success !== undefined && launch_year) {
             const body = {
                 launch_success: launch_success,
                 land_success: val,
                 launch_year: launch_year,
             }
             this.props.FilterAction(body);
-            return;
-        } else if (launch_success !== undefined) {
-            const body = {
-                launch_success: launch_success,
-                land_success: val,
-            }
-            this.props.FilterAction(body);
-            return;
         }
-
     }
 
 
@@ -220,6 +143,7 @@ class Dashboard extends Component {
         return (
             <Aux>
                 {errMsg ? <div className="toastr">{errMsg}</div> : (null)}
+                {/* SIDE BAR  */}
                 <FilterCmp
                     years={years}
                     isSuccessful={isSuccessful}
@@ -230,6 +154,7 @@ class Dashboard extends Component {
                     getLaunch={this.getLaunch}
                     getLand={this.getLand}
                 />
+                {/* LIST OF ITEMS */}
                 <List
                     isLoading={isLoading}
                     list={list}

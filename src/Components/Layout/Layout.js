@@ -26,6 +26,7 @@ class Layout extends Component {
                         {this.getRoutes(routes)}
                     </Switch>
                 </div>
+                <p className="copyrights"><span>Developed By: </span> UTTAM KUMAR</p>
             </Aux>
         )
     }
