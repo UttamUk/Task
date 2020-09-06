@@ -2,9 +2,9 @@
 Click here [SpaceX Website](https://space-task.herokuapp.com/) to view it in the browser.
 
 ## Instructions
-First Install node_modules:
-cmd: npm install
-Run the app in the development mode.
+First Install node_modules:<br />
+cmd: npm install<br /><br />
+Run the app in the development mode.<br />
 cmd: npm start
 <br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
