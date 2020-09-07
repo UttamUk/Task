@@ -8,8 +8,7 @@ const List = (props) => {
                 {props.list?.length > 0
                     ? props.list.map((item, index) => <div className="gridbox" key={index}>
                         <div className="box-img">
-                            {/* <img src={item.links.mission_patch} alt=" no image" /> */}
-                            <img src={item.links.flickr_images?.length > 0 ? item.links.flickr_images[0] : "./images/img.png" } alt=" flight" />
+                            <img src={item.links?.mission_patch} alt=" no image" />
                         </div>
                         <h6 className="title">{item.mission_name} #{item.flight_number}</h6>
                         <h6 className="title title1">Mission Ids:</h6>
