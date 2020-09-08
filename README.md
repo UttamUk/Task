@@ -22,6 +22,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 
 ### Lighthouse Screenshots
-![lighthouse](https://user-images.githubusercontent.com/33575994/92393830-2046d200-f13e-11ea-979e-9d538f0622db.png)
+![lighthouse](https://user-images.githubusercontent.com/33575994/92431519-58d5c280-f1b5-11ea-807c-d9401db41048.png)
 ![pagespeed_Desktop](https://user-images.githubusercontent.com/33575994/92323551-56f5ed00-f057-11ea-8731-98d761b73b3f.png)
 ![pagespeed_Mobile](https://user-images.githubusercontent.com/33575994/92323552-578e8380-f057-11ea-9247-4cb12629b5b3.png)
